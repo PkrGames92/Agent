@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Web Dashboard</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      background: linear-gradient(to right, #3b82f6, #9333ea); 
+      margin: 0; padding: 0; 
+      color: #fff;
+    }
+    header {
+      background: rgba(0,0,0,0.2);
+      padding: 20px; 
+      text-align: center;
+      font-size: 26px; 
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .card { 
+      background: #fff; 
+      color: #333; 
+      padding: 25px; 
+      margin: 20px auto; 
+      border-radius: 20px; 
+      width: 380px; 
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3); 
+      text-align: center;
+    }
+    .balance { 
+      font-size: 22px; 
+      margin-bottom: 20px; 
+      font-weight: bold; 
+      color: #3b82f6;
+    }
+    .circle {
+      width: 160px; height: 160px; 
+      border-radius: 50%;
+      background: conic-gradient(#3b82f6, #9333ea); 
+      display: flex; align-items: center; justify-content: center;
+      margin: 20px auto; 
+      font-size: 20px; font-weight: bold; 
+      color: #fff;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    }
+    button { 
+      padding: 12px 20px; 
+      margin: 8px; 
+      border: none; 
+      border-radius: 12px; 
+      background: #3b82f6; 
+      color: white; 
+      cursor: pointer; 
+      font-size: 15px; 
+      transition: 0.3s;
+    }
+    button:hover { background: #2563eb; }
+    input { 
+      padding: 10px; width: 80%; 
+      border-radius: 8px; 
+      border: 1px solid #ccc; 
+      margin-bottom: 10px; 
+      text-align: center;
+    }
+    #referralSection { 
+      display:none; 
+      margin-top:20px; 
+      background: #f9fafb; 
+      color:#333; 
+      padding:15px; 
+      border-radius:12px;
+    }
+    #referralSection h3 { color:#9333ea; }
+  </style>
+</head>
+<body>
+
+<header>📊 Agent Web Dashboard</header>
+
+<div class="card">
+  <div class="balance">Balance: Rs <span id="balance">0</span></div>
+
+  <div>
+    <input type="text" id="txnId" placeholder="Enter Transaction ID">
+    <button onclick="deposit()">Deposit</button>
+  </div>
+
+  <div class="circle" id="timer">24h</div>
+
+  <button onclick="buyPlan()">Buy Now (VIP 3)</button>
+  <button onclick="showReferral()">Referral</button>
+
+  <div id="referralSection">
+    <h3>Referral Program</h3>
+    <p>Invite your friends! You will get <b>20% commission</b> on their deposit.</p>
+    <p>Your Referral Link:</p>
+    <input type="text" value="https://example.com/ref/12345" readonly>
+    <br><br>
+    <button onclick="addReferralCommission()">Simulate Referral Deposit</button>
+  </div>
+</div>
+
+<script>
+  let balance = 0;
+  let planActive = false;
+  let countdown = 24 * 60 * 60; // 24h in seconds
+
+  function updateBalance() {
+    document.getElementById("balance").innerText = balance;
+  }
+
+  function deposit() {
+    let txn = document.getElementById("txnId").value;
+    if(txn.trim() !== "") {
+      balance += 5000;
+      updateBalance();
+      alert("Deposit successful! Rs 5000 added.");
+    } else {
+      alert("Enter valid Transaction ID!");
+    }
+  }
+
+  function buyPlan() {
+    if(balance >= 5000 && !planActive) {
+      balance -= 5000;
+      updateBalance();
+      planActive = true;
+      alert("VIP 3 Plan Activated! Daily Rs 833 will be added.");
+      startTimer();
+    } else if(planActive) {
+      alert("Plan already active!");
+    } else {
+      alert("Insufficient Balance!");
+    }
+  }
+
+  function startTimer() {
+    let timeLeft = countdown;
+    let timerDisplay = document.getElementById("timer");
+    setInterval(() => {
+      if(planActive) {
+        let hours = Math.floor(timeLeft / 3600);
+        let minutes = Math.floor((timeLeft % 3600) / 60);
+        let seconds = timeLeft % 60;
+        timerDisplay.innerText = hours+"h "+minutes+"m "+seconds+"s";
+        timeLeft--;
+        if(timeLeft < 0) {
+          balance += 833;
+          updateBalance();
+          alert("Daily Profit Rs 833 Added!");
+          timeLeft = countdown; // reset timer
+        }
+      }
+    }, 1000);
+  }
+
+  function showReferral() {
+    document.getElementById("referralSection").style.display = "block";
+  }
+
+  function addReferralCommission() {
+    balance += 1000; // 20% of 5000
+    updateBalance();
+    alert("Referral commission Rs 1000 added!");
+  }
+</script>
+
+</body>
+</html>
