@@ -2,164 +2,82 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agent Web Dashboard</title>
+  <title>VIP Investment Dashboard</title>
   <style>
-    body { font-family: Arial, sans-serif; background: linear-gradient(to right, #ef4444, #f97316, #f59e0b); margin: 0; padding: 0; color: #fff; }
-    header { background: rgba(0,0,0,0.3); padding: 20px; text-align: center; font-size: 26px; font-weight: bold; }
-    nav { text-align: center; margin: 15px 0; }
-    nav button { padding: 10px 18px; margin: 5px; border: none; border-radius: 10px; background: #ef4444; color: white; cursor: pointer; font-size: 15px; }
-    nav button:hover { background: #b91c1c; }
-    .page { display: none; }
-    .active { display: block; }
-    .card { background: #fff; color: #333; padding: 20px; margin: 20px auto; border-radius: 15px; width: 370px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); text-align: center; }
-    .balance { font-size: 22px; margin-bottom: 15px; font-weight: bold; color: #ef4444; }
-    .circle { width: 150px; height: 150px; border-radius: 50%; background: conic-gradient(#ef4444, #f97316, #f59e0b); display: flex; align-items: center; justify-content: center; margin: 20px auto; font-size: 18px; font-weight: bold; color: #fff; }
-    input, select { padding: 10px; width: 85%; margin: 8px; border-radius: 8px; border: 1px solid #ccc; }
-    button.action { margin-top: 10px; width: 90%; border-radius: 10px; padding: 12px; background: #f97316; color: white; font-weight: bold; border: none; cursor: pointer; }
-    button.action:hover { background: #ea580c; }
-    h3 { color: #ef4444; }
-    .info { font-size: 14px; color: #444; margin: 10px 0; }
+    body{margin:0;font-family:sans-serif;background:linear-gradient(135deg,#ff512f,#dd2476,#ff512f);background-size:600% 600%;animation:bg 12s ease infinite;min-height:100vh;color:#fff}
+    @keyframes bg{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    .container{max-width:460px;margin:auto;padding:20px}
+    h1{text-align:center;margin-bottom:20px}
+    nav{display:flex;justify-content:space-around;margin-bottom:20px}
+    nav button{flex:1;margin:0 5px;padding:10px;border:none;border-radius:6px;background:#fff;color:#dd2476;font-weight:bold;cursor:pointer}
+    .card{background:rgba(255,255,255,0.15);padding:20px;border-radius:12px;backdrop-filter:blur(5px);margin-bottom:20px}
+    .balance{font-size:24px;font-weight:bold;text-align:center}
+    .circle{width:120px;height:120px;border-radius:50%;border:8px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:18px;margin:20px auto;position:relative}
+    .btn{display:block;width:100%;padding:12px;background:#fff;color:#dd2476;font-weight:bold;text-align:center;border:none;border-radius:8px;margin-top:10px;cursor:pointer}
+    .hidden{display:none}
+    input{width:100%;padding:10px;margin-top:10px;border-radius:6px;border:none}
+    .small{font-size:14px;opacity:0.9}
   </style>
 </head>
 <body>
-
-<header>📊 Agent Web Dashboard</header>
-
-<nav>
-  <button onclick="showPage('dashboard')">Dashboard</button>
-  <button onclick="showPage('deposit')">Deposit</button>
-  <button onclick="showPage('withdraw')">Withdraw</button>
-  <button onclick="showPage('referral')">Referral</button>
-</nav>
-
-<!-- Dashboard -->
-<div id="dashboard" class="page active">
-  <div class="card">
+  <div class="container">
+    <h1>VIP 3 Dashboard</h1>
     <div class="balance">Balance: Rs <span id="balance">0</span></div>
-    <div class="circle" id="timer">24h</div>
-    <button class="action" onclick="buyPlan()">Buy Now (VIP 3)</button>
-  </div>
-</div>
+    <div class="circle"><span id="timer">Inactive</span></div>
 
-<!-- Deposit -->
-<div id="deposit" class="page">
-  <div class="card">
-    <h3>Deposit Funds</h3>
-    <p class="info">Easypaisa Number: <b>0345-1234567</b></p>
-    <p class="info">USDT Address: <b>TRcXyz123Abc4567...</b></p>
-    <input type="text" id="txnId" placeholder="Enter Transaction ID">
-    <button class="action" onclick="deposit()">Submit Deposit</button>
-  </div>
-</div>
+    <nav>
+      <button onclick="show('dashboard')">Dashboard</button>
+      <button onclick="show('deposit')">Deposit</button>
+      <button onclick="show('withdraw')">Withdraw</button>
+      <button onclick="show('referral')">Referral</button>
+    </nav>
 
-<!-- Withdraw -->
-<div id="withdraw" class="page">
-  <div class="card">
-    <h3>Withdraw Funds</h3>
-    <p>Select Method:</p>
-    <select id="withdrawMethod">
-      <option>Easypaisa</option>
-      <option>JazzCash</option>
-      <option>USDT Address</option>
-    </select>
-    <input type="text" id="withdrawNumber" placeholder="Enter Account / Address">
-    <input type="number" id="withdrawAmount" placeholder="Enter Amount">
-    <button class="action" onclick="withdraw()">Submit Withdraw</button>
-  </div>
-</div>
+    <!-- Dashboard -->
+    <div id="dashboard" class="card">
+      <h3>VIP 3 Plan</h3>
+      <p>Price: Rs 5,000<br>Daily Profit: Rs 833<br>Total Profit: Rs 25,000<br>Duration: 30 Days<br>Daily Tasks: 5 TikTok Videos</p>
+      <button class="btn" onclick="buyPlan()">Buy Plan</button>
+    </div>
 
-<!-- Referral -->
-<div id="referral" class="page">
-  <div class="card">
-    <h3>Referral Program</h3>
-    <p>Invite your friends and earn <b>20% commission</b> on their deposits.</p>
-    <p>Your Referral Link:</p>
-    <input type="text" value="https://example.com/ref/12345" readonly>
-    <br><br>
-    <button class="action" onclick="addReferralCommission()">Simulate Referral Deposit</button>
+    <!-- Deposit -->
+    <div id="deposit" class="card hidden">
+      <h3>Deposit</h3>
+      <p class="small">Use the following details to deposit:</p>
+      <p><b>Easypaisa Number:</b> 03319535871</p>
+      <p><b>USDT Address:</b> TRREi2xqQF9rqQt23xBviZ3h9zWkQiUaaq</p>
+      <input type="text" id="txnId" placeholder="Enter Transaction ID">
+      <button class="btn" onclick="onDeposit()">Confirm Deposit</button>
+    </div>
+
+    <!-- Withdraw -->
+    <div id="withdraw" class="card hidden">
+      <h3>Withdraw</h3>
+      <p class="small">Choose method: Easypaisa, JazzCash, or USDT</p>
+      <input type="text" id="withdrawAcc" placeholder="Enter Account/Address">
+      <input type="number" id="withdrawAmt" placeholder="Enter Amount">
+      <button class="btn" onclick="onWithdraw()">Request Withdraw</button>
+    </div>
+
+    <!-- Referral -->
+    <div id="referral" class="card hidden">
+      <h3>Referral Program</h3>
+      <p>You earn <b>20% commission</b> from every referral deposit.</p>
+      <input type="text" value="https://example.com/ref/12345" readonly>
+      <button class="btn">Copy Link</button>
+    </div>
   </div>
-</div>
 
 <script>
-  let balance = 0;
-  let planActive = false;
-  let countdown = 24 * 60 * 60; // 24h in seconds
-
-  function updateBalance() {
-    document.getElementById("balance").innerText = balance;
-  }
-
-  function showPage(id) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-  }
-
-  function deposit() {
-    let txn = document.getElementById("txnId").value;
-    if(txn.trim() !== "") {
-      balance += 5000;
-      updateBalance();
-      alert("Deposit successful! Rs 5000 added.");
-      showPage('dashboard');
-    } else {
-      alert("Please enter a valid Transaction ID!");
-    }
-  }
-
-  function buyPlan() {
-    if(balance >= 5000 && !planActive) {
-      balance -= 5000;
-      updateBalance();
-      planActive = true;
-      alert("VIP 3 Plan Activated! Daily Rs 833 will be added.");
-      startTimer();
-    } else if(planActive) {
-      alert("Plan already active!");
-    } else {
-      alert("Insufficient Balance!");
-    }
-  }
-
-  function startTimer() {
-    let timeLeft = countdown;
-    let timerDisplay = document.getElementById("timer");
-    setInterval(() => {
-      if(planActive) {
-        let hours = Math.floor(timeLeft / 3600);
-        let minutes = Math.floor((timeLeft % 3600) / 60);
-        let seconds = timeLeft % 60;
-        timerDisplay.innerText = hours+"h "+minutes+"m "+seconds+"s";
-        timeLeft--;
-        if(timeLeft < 0) {
-          balance += 833;
-          updateBalance();
-          alert("Daily Profit Rs 833 Added!");
-          timeLeft = countdown; // reset timer
-        }
-      }
-    }, 1000);
-  }
-
-  function withdraw() {
-    let amount = parseInt(document.getElementById("withdrawAmount").value);
-    if(amount > 0 && amount <= balance) {
-      balance -= amount;
-      updateBalance();
-      alert("Withdraw request of Rs " + amount + " submitted!");
-      showPage('dashboard');
-    } else {
-      alert("Invalid Amount or Insufficient Balance!");
-    }
-  }
-
-  function addReferralCommission() {
-    balance += 1000; // 20% of 5000
-    updateBalance();
-    alert("Referral commission Rs 1000 added!");
-    showPage('dashboard');
-  }
+const PLAN_PRICE=5000, DAILY_PROFIT=833, PLAN_DAYS=30, DAY_MS=24*60*60*1000;
+function getState(){return JSON.parse(localStorage.getItem('state')||'{"balance":0,"active":false,"start":0,"payouts":0,"lastPayout":0}')}
+function setState(s){localStorage.setItem('state',JSON.stringify(s))}
+function updateBalanceDom(){document.getElementById('balance').textContent=getState().balance}
+function show(id){for(const sec of['dashboard','deposit','withdraw','referral'])document.getElementById(sec).classList.add('hidden');document.getElementById(id).classList.remove('hidden')}
+function buyPlan(){let s=getState();if(s.active){alert('Plan already active');return}if(s.balance<PLAN_PRICE){alert('Insufficient balance');return}s.balance-=PLAN_PRICE;s.active=true;s.start=Date.now();s.lastPayout=Date.now();s.payouts=0;setState(s);updateBalanceDom();alert('Plan Activated')}
+function onDeposit(){let s=getState();const txn=document.getElementById('txnId').value;if(!txn){alert('Enter Transaction ID');return}s.balance+=PLAN_PRICE;setState(s);updateBalanceDom();alert('Deposit Successful')}
+function onWithdraw(){let s=getState();const amt=parseInt(document.getElementById('withdrawAmt').value);if(amt>s.balance){alert('Not enough balance');return}s.balance-=amt;setState(s);updateBalanceDom();alert('Withdraw Request Submitted')}
+function tick(){let s=getState();if(s.active&&s.payouts<PLAN_DAYS){let now=Date.now(),elapsed=Math.floor((now-s.lastPayout)/DAY_MS);if(elapsed>=1){let add=Math.min(elapsed,PLAN_DAYS-s.payouts);s.balance+=add*DAILY_PROFIT;s.payouts+=add;s.lastPayout+=add*DAY_MS;setState(s);updateBalanceDom()}let next=DAY_MS-(now-s.lastPayout);if(next<0)next=0;let h=Math.floor(next/3600000),m=Math.floor((next%3600000)/60000),sec=Math.floor((next%60000)/1000);document.getElementById('timer').textContent=h+"h "+m+"m "+sec+"s"}else if(s.active&&s.payouts>=PLAN_DAYS){document.getElementById('timer').textContent="Plan Complete"}}
+setInterval(tick,1000);updateBalanceDom();
 </script>
-
 </body>
 </html>
